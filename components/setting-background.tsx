@@ -14,32 +14,40 @@ import bg8 from "../public/bg8.jpg";
 import bg9 from "../public/bg9.png";
 import bg10 from "../public/bg10.jpg";
 import Image, { StaticImageData } from "next/image";
+import { BackgroundType } from "@/lib/types";
+import clsx from "clsx";
 
 const SettingBackground = () => {
   const { background, setBackground } = useBackgroundContext();
   const bgList = [bg1, bg2, bg3, bg4, bg5, bg6, bg7, bg8, bg9, bg10];
 
+  const handleClick = ({ src, blurDataURL }: BackgroundType) => {
+    setBackground({ src, blurDataURL });
+
+    localStorage.setItem("backgroundSrc", src);
+    if (blurDataURL) localStorage.setItem("backgroundBlurDataURL", blurDataURL);
+  };
+
   return (
-    <div className="flex flex-wrap gap-3 mt-6 mx-auto items-center justify-center">
+    <div className="flex flex-wrap gap-3 mt-6">
       {bgList.map((bg: StaticImageData, index: number) => {
-        console.log(bg);
         return (
           <div
             key={index}
-            className="inline-block rounded-sm overflow-hidden cursor-pointer outline outline-2 outline-cyan-500"
-            onClick={() => {
-              setBackground(bg);
-              localStorage.setItem("background", bg.src);
-              if (bg.blurDataURL)
-                localStorage.setItem("backgroundBlurDataURL", bg.blurDataURL);
-            }}
+            className={clsx(
+              "inline-block rounded-sm overflow-hidden cursor-pointer ",
+              {
+                "outline outline-2 outline-cyan-400": bg.src === background.src,
+              }
+            )}
+            onClick={() => handleClick(bg)}
           >
             <Image
               src={bg}
               alt="background"
               quality={50}
-              width={160}
-              height={90}
+              width={180}
+              height={101.25}
               placeholder="blur"
             />
           </div>

@@ -3,11 +3,13 @@
 import { createContext, useContext, useState } from "react";
 
 import bg1 from "../public/bg1.jpg";
-import { StaticImageData } from "next/image";
+import { getBackgroundFromStorage } from "@/lib/utils";
+import { BackgroundType } from "@/lib/types";
+
 
 type BackgroundContextType = {
-  background: StaticImageData;
-  setBackground: (image: StaticImageData) => void;
+  background: BackgroundType;
+  setBackground: (image: BackgroundType) => void;
 };
 
 type BackgroundContextProviderProps = {
@@ -19,7 +21,13 @@ const BackgroundContext = createContext<BackgroundContextType | null>(null);
 export const BackgroundContextProvider = ({
   children,
 }: BackgroundContextProviderProps) => {
-  const [background, setBackground] = useState<StaticImageData>(bg1);
+  const storedBackground = getBackgroundFromStorage();
+  const [background, setBackground] = useState<BackgroundType>(
+    storedBackground || {
+      src: bg1.src,
+      blurDataURL: bg1.blurDataURL,
+    }
+  );
 
   return (
     <BackgroundContext.Provider value={{ background, setBackground }}>

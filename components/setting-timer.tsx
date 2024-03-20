@@ -73,7 +73,7 @@ const SettingTimer = () => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6 space-y-4">
-        <div className="flex gap-3">
+        <div className="flex flex-wrap sm:flex-nowrap gap-x-3 gap-y-2">
           <FormField
             control={form.control}
             name="pomodoroTime"

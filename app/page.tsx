@@ -14,12 +14,12 @@ export default function Home() {
     <div className="h-screen w-full relative -z-index-10">
       <Image
         alt="Background"
-        src="/_next/static/media/bg4.4f703aa6.jpg"
+        src={background.src}
         quality={100}
         fill
         style={{ objectFit: "cover" }}
         placeholder="blur"
-        blurDataURL="/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fbg4.4f703aa6.jpg&w=8&q=70"
+        blurDataURL={background.blurDataURL || undefined}
       />
       <div className="absolute left-0 top-0 h-screen w-screen flex flex-col">
         <Header />

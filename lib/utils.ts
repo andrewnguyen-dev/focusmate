@@ -17,3 +17,15 @@ const getTimeFromStorage = (key: string, defaultValue: number) => {
 export const getPomodoroTime = () => getTimeFromStorage("pomodoroTime", DEFAULT_POMODORO_TIME);
 export const getShortBreakTime = () => getTimeFromStorage("shortBreakTime", DEFAULT_SHORT_BREAK_TIME);
 export const getLongBreakTime = () => getTimeFromStorage("longBreakTime", DEFAULT_LONG_BREAK_TIME);
+
+export const getBackgroundFromStorage = () => {
+  const src = localStorage.getItem("backgroundSrc");
+  const blurDataURL = localStorage.getItem("backgroundBlurDataURL");
+  if (src !== null) {
+    return {
+      src,
+      blurDataURL,
+    };
+  }
+  return null;
+}
