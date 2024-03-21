@@ -4,6 +4,7 @@ import Image from "next/image";
 import Header from "@/components/header";
 import Timer from "@/components/timer";
 import { useBackgroundContext } from "@/context/background-context";
+import Quote from "@/components/quote";
 
 export default function Home() {
   const { background } = useBackgroundContext();
@@ -19,9 +20,10 @@ export default function Home() {
         placeholder="blur"
         blurDataURL={background.blurDataURL || undefined}
       />
-      <div className="absolute left-0 top-0 h-screen w-screen flex flex-col">
+      <div className="absolute left-0 top-0 h-screen w-screen flex flex-col justify-between">
         <Header />
         <Timer />
+        <Quote />
       </div>
     </div>
   );

@@ -105,9 +105,9 @@ const Timer = () => {
           onClick={() => {
             setIsRunning(!isRunning);
           }}
-          className="text-gray-50 py-2 px-5 border-2 border-gray-50 rounded-[16px]"
+          className="text-gray-50 py-2 px-5 border-2 border-gray-50 rounded-[16px] hover:bg-gray-50 hover:text-gray-800 transition-all ease-in"
         >
-          {isRunning ? "Pause" : "Start"}
+          {isRunning ? "pause" : "start"}
         </button>
         <button
           onClick={() => {
@@ -120,9 +120,9 @@ const Timer = () => {
             );
             setIsRunning(false);
           }}
-          className="text-gray-50 py-2 px-5 border-2 border-gray-50 rounded-[16px]"
+          className="text-gray-50 py-2 px-5 border-2 border-gray-50 rounded-[16px] hover:bg-gray-50 hover:text-gray-800 transition-all ease-in"
         >
-          Reset
+          reset
         </button>
       </div>
     </div>
