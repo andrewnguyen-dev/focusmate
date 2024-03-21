@@ -4,6 +4,7 @@
 import { useTimeContext } from "@/context/time-context";
 import { useEffect, useState } from "react";
 import ModeButton from "./mode-button";
+import useSound from "use-sound";
 
 const Timer = () => {
   const { pomodoroTime, shortBreakTime, longBreakTime } = useTimeContext();
@@ -13,19 +14,29 @@ const Timer = () => {
   const [sessionType, setSessionType] = useState("pomodoro");
   const [pomodoroCount, setPomodoroCount] = useState(0);
   const formattedTime = new Date(timeLeft * 1000).toISOString().slice(14, 19); // Convert to ISO string and extract the MM:SS part
-  
-    // Manages the countdown of the timer, pausing when reaching 0 and handling session transitions.
-    useEffect(() => {
-      if (isRunning && timeLeft > 0) {
+
+  const [playCountdownSound] = useSound("/sound/countdown.mp3");
+  const [playEndSound] = useSound("/sound/end.mp3");
+
+  // Manages the countdown of the timer, pausing when reaching 0 and handling session transitions.
+  useEffect(() => {
+    if (isRunning) {
+      if (timeLeft === 5) {
+        playCountdownSound();
+      }
+      if (timeLeft > 0) {
         const interval = setInterval(() => {
           setTimeLeft((prevTimeLeft) => prevTimeLeft - 1);
         }, 1000);
         return () => clearInterval(interval);
-      } else if (timeLeft === 0) {
+      }
+      if (timeLeft === 0) {
+        playEndSound();
         setIsRunning(false);
         handleSessionTransition();
       }
-    }, [isRunning, timeLeft]);
+    }
+  }, [isRunning, timeLeft]);
 
   // Updates the timeLeft whenever the sessionType changes or the duration for the current session type is updated.
   useEffect(() => {
@@ -72,7 +83,9 @@ const Timer = () => {
       <div className="flex gap-3">
         <ModeButton
           label="pomodoro"
-          onClick={() => startSession("pomodoro")}
+          onClick={() => {
+            startSession("pomodoro");
+          }}
           sessionType={sessionType}
         />
         <ModeButton

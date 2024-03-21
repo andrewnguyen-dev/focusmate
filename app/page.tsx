@@ -1,10 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import bg1 from "../public/bg1.jpg";
 import Header from "@/components/header";
 import Timer from "@/components/timer";
-import { useEffect } from "react";
 import { useBackgroundContext } from "@/context/background-context";
 
 export default function Home() {

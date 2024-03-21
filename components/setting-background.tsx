@@ -3,16 +3,16 @@
 import { useBackgroundContext } from "@/context/background-context";
 import React from "react";
 
-import bg1 from "../public/bg1.jpg";
-import bg2 from "../public/bg2.jpg";
-import bg3 from "../public/bg3.jpg";
-import bg4 from "../public/bg4.jpg";
-import bg5 from "../public/bg5.png";
-import bg6 from "../public/bg6.png";
-import bg7 from "../public/bg7.jpg";
-import bg8 from "../public/bg8.jpg";
-import bg9 from "../public/bg9.png";
-import bg10 from "../public/bg10.jpg";
+import bg1 from "../public/images/bg1.jpg";
+import bg2 from "../public/images/bg2.jpg";
+import bg3 from "../public/images/bg3.jpg";
+import bg4 from "../public/images/bg4.jpg";
+import bg5 from "../public/images/bg5.png";
+import bg6 from "../public/images/bg6.png";
+import bg7 from "../public/images/bg7.jpg";
+import bg8 from "../public/images/bg8.jpg";
+import bg9 from "../public/images/bg9.png";
+import bg10 from "../public/images/bg10.jpg";
 import Image, { StaticImageData } from "next/image";
 import { BackgroundType } from "@/lib/types";
 import clsx from "clsx";

@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState } from "react";
 
-import bg1 from "../public/bg1.jpg";
+import bg1 from "../public/images/bg1.jpg";
 import { getBackgroundFromStorage } from "@/lib/utils";
 import { BackgroundType } from "@/lib/types";
 
