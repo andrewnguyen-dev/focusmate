@@ -1,21 +1,19 @@
-'use client';
+"use client";
 
-import { createContext, useContext, useState } from "react";
-import {
-  getLongBreakTime,
-  getPomodoroTime,
-  getShortBreakTime,
-} from "@/lib/utils";
+const DEFAULT_POMODORO_TIME = 25 * 60;
+const DEFAULT_SHORT_BREAK_TIME = 5 * 60;
+const DEFAULT_LONG_BREAK_TIME = 10 * 60;
 
-type TimeType = number;
+import { createContext, useContext, useEffect, useState } from "react";
+import { setStoredTime } from "@/lib/utils";
 
 type TimeContextType = {
-  pomodoroTime: TimeType;
-  setPomodoroTime: (time: TimeType) => void;
-  shortBreakTime: TimeType;
-  setShortBreakTime: (time: TimeType) => void;
-  longBreakTime: TimeType;
-  setLongBreakTime: (time: TimeType) => void;
+  pomodoroTime: number;
+  setPomodoroTime: (time: number) => void;
+  shortBreakTime: number;
+  setShortBreakTime: (time: number) => void;
+  longBreakTime: number;
+  setLongBreakTime: (time: number) => void;
 };
 
 type TimeContextProviderProps = {
@@ -24,14 +22,24 @@ type TimeContextProviderProps = {
 
 const TimeContext = createContext<TimeContextType | null>(null);
 
-export const TimeContextProvider = ({ children }: TimeContextProviderProps) => {
-  const storedPomodoroTime = getPomodoroTime();
-  const storedShortBreakTime = getShortBreakTime();
-  const storedLongBreakTime = getLongBreakTime();
 
-  const [pomodoroTime, setPomodoroTime] = useState<TimeType>(storedPomodoroTime);
-  const [shortBreakTime, setShortBreakTime] = useState<TimeType>(storedShortBreakTime);
-  const [longBreakTime, setLongBreakTime] = useState<TimeType>(storedLongBreakTime);
+
+export const TimeContextProvider = ({ children }: TimeContextProviderProps) => {
+  const [pomodoroTime, setPomodoroTime] = useState<number>(
+    DEFAULT_POMODORO_TIME
+  );
+  const [shortBreakTime, setShortBreakTime] = useState<number>(
+    DEFAULT_SHORT_BREAK_TIME
+  );
+  const [longBreakTime, setLongBreakTime] = useState<number>(
+    DEFAULT_LONG_BREAK_TIME
+  );
+
+  useEffect(() => {
+    setStoredTime("pomodoroTime", setPomodoroTime);
+    setStoredTime("shortBreakTime", setShortBreakTime);
+    setStoredTime("longBreakTime", setLongBreakTime);
+  }, []);
 
   return (
     <TimeContext.Provider

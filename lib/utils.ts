@@ -1,31 +1,36 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import bg1 from "../public/images/bg1.jpg";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-const DEFAULT_POMODORO_TIME = 25 * 60;
-const DEFAULT_SHORT_BREAK_TIME = 5 * 60;
-const DEFAULT_LONG_BREAK_TIME = 10 * 60;
-
-const getTimeFromStorage = (key: string, defaultValue: number) => {
+export const getTimeFromStorage = (key: string) => {
+  if (typeof window === 'undefined') {
+    return null; // Return null if not running in a browser environment
+  }
   const storedValue = localStorage.getItem(key);
-  return storedValue !== null ? JSON.parse(storedValue) : defaultValue;
+  return storedValue !== null ? JSON.parse(storedValue) : null;
 }
 
-export const getPomodoroTime = () => getTimeFromStorage("pomodoroTime", DEFAULT_POMODORO_TIME);
-export const getShortBreakTime = () => getTimeFromStorage("shortBreakTime", DEFAULT_SHORT_BREAK_TIME);
-export const getLongBreakTime = () => getTimeFromStorage("longBreakTime", DEFAULT_LONG_BREAK_TIME);
+export const setStoredTime = (state: string, setState: React.Dispatch<React.SetStateAction<number>>) => {
+  const storedTime = getTimeFromStorage(state);
+  if (storedTime) setState(storedTime);
+}
 
 export const getBackgroundFromStorage = () => {
-  const src = localStorage.getItem("backgroundSrc");
-  const blurDataURL = localStorage.getItem("backgroundBlurDataURL");
-  if (src !== null) {
-    return {
-      src,
-      blurDataURL,
-    };
+  if (typeof window !== "undefined") {
+    const src = localStorage.getItem("backgroundSrc");
+    const blurDataURL = localStorage.getItem("backgroundBlurDataURL");
+    if (src !== null) {
+      return {
+        src,
+        blurDataURL,
+      };
+    }
   }
   return null;
-}
+};
+
+

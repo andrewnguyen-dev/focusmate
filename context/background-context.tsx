@@ -1,11 +1,10 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 import bg1 from "../public/images/bg1.jpg";
-import { getBackgroundFromStorage } from "@/lib/utils";
 import { BackgroundType } from "@/lib/types";
-
+import { getBackgroundFromStorage } from "@/lib/utils";
 
 type BackgroundContextType = {
   background: BackgroundType;
@@ -21,13 +20,17 @@ const BackgroundContext = createContext<BackgroundContextType | null>(null);
 export const BackgroundContextProvider = ({
   children,
 }: BackgroundContextProviderProps) => {
-  const storedBackground = getBackgroundFromStorage();
-  const [background, setBackground] = useState<BackgroundType>(
-    storedBackground || {
-      src: bg1.src,
-      blurDataURL: bg1.blurDataURL,
+  const [background, setBackground] = useState<BackgroundType>({
+    src: bg1.src,
+    blurDataURL: bg1.blurDataURL,
+  });
+
+  useEffect(() => {
+    const storedBackground = getBackgroundFromStorage();
+    if (storedBackground) {
+      setBackground(storedBackground);
     }
-  );
+  }, []);
 
   return (
     <BackgroundContext.Provider value={{ background, setBackground }}>

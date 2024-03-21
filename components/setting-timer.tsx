@@ -16,11 +16,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-import {
-  getLongBreakTime,
-  getPomodoroTime,
-  getShortBreakTime,
-} from "@/lib/utils";
 import { useState } from "react";
 import { useTimeContext } from "@/context/time-context";
 

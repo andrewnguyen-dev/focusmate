@@ -1,3 +1,6 @@
+"use client"
+
+import useSound from "use-sound";
 import {
   DrawerDescription,
   DrawerHeader,

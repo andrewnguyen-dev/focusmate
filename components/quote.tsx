@@ -17,8 +17,8 @@ const Quote = () => {
 
   return (
     <div className="flex flex-col items-center justify-center mb-10 space-y-2 h-32">
-      <p className="text-gray-100/80 text-3xl text-center font-medium sm:max-w-xl">{quotes[randomIndex].saying}</p>
-      <p className="text-gray-100/70 text-md text-center">{quotes[randomIndex].author}</p>
+      <p className="text-gray-100/85 text-3xl text-center font-medium sm:max-w-xl">{quotes[randomIndex].saying}</p>
+      <p className="text-gray-100/75 text-md text-center">{quotes[randomIndex].author}</p>
     </div>
   );
 };
