@@ -17,7 +17,7 @@ const Timer = () => {
   const formattedTime = new Date(timeLeft * 1000).toISOString().slice(14, 19); // Convert to ISO string and extract the MM:SS part
 
   const [playCountdownSound] = useSound("/sound/countdown.mp3");
-  const [playEndSound] = useSound("/sound/end.mp3");
+  const [playEndSound, {stop, sound}] = useSound("/sound/end.mp3");
 
   // Manages the countdown of the timer, pausing when reaching 0 and handling session transitions.
   useEffect(() => {

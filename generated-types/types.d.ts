@@ -15,6 +15,7 @@ export interface PlayOptions {
     id?: string;
     forceSoundEnabled?: boolean;
     playbackRate?: number;
+    volume?: number;
 }
 export declare type PlayFunction = (options?: PlayOptions) => void;
 export interface ExposedData {

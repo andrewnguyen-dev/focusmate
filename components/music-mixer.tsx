@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import useSound from "use-sound";
@@ -8,46 +9,64 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from "@/components/ui/drawer";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Slider } from "./ui/slider";
+import { useVolumeContext } from "@/context/volume-context";
 
 type backgroundMusicDataType = {
   label: string;
   play: () => void;
   stop: () => void;
+  sound?: Howl | null;
 };
 
 const MusicMixer = () => {
-  const [playCalmPiano, { stop: stopCalmPiano }] = useSound(
-    "/sound/calmPiano.mp3",
-    { loop: true }
-  );
-  const [playLofiChillhop, { stop: stopLofiChillhop }] = useSound(
-    "/sound/lofiChillhop.mp3",
-    { loop: true }
-  );
-  const [playJazz, { stop: stopJazz }] = useSound("/sound/jazz.mp3", {
+  const { volume, setVolume } = useVolumeContext();
+  const prevMusicalRef = useRef<backgroundMusicDataType>();
+  const prevAmbientRef = useRef<backgroundMusicDataType>();
+
+  const [playCalmPiano, { stop: stopCalmPiano, sound: soundCalmPiano }] =
+    useSound("/sound/calmPiano.mp3", {
+      loop: true,
+      volume: volume.musical / 100,
+    });
+
+  const [
+    playLofiChillhop,
+    { stop: stopLofiChillhop, sound: soundLofiChillhop },
+  ] = useSound("/sound/lofiChillhop.mp3", {
     loop: true,
+    volume: volume.musical / 100,
   });
 
-  const [playRain, { stop: stopRain }] = useSound("/sound/rain.mp3", {
+  const [playJazz, { stop: stopJazz, sound: soundJazz }] = useSound(
+    "/sound/jazz.mp3",
+    { loop: true, volume: volume.musical / 100 }
+  );
+
+  const [playRain, { stop: stopRain, sound: soundRain }] = useSound(
+    "/sound/rain.mp3",
+    { loop: true, volume: volume.ambient / 100 }
+  );
+
+  const [playFireplace, { stop: stopFireplace, sound: soundFireplace }] =
+    useSound("/sound/fireplace.mp3", {
+      loop: true,
+      volume: volume.ambient / 100,
+    });
+
+  const [playCoffeeShop, { stop: stopCoffeeShop, sound: soundCoffeeShop }] =
+    useSound("/sound/coffeeShop.mp3", {
+      loop: true,
+      volume: volume.ambient / 100,
+    });
+  const [
+    playWaterfallNature,
+    { stop: stopWaterfallNature, sound: soundWaterfallNature },
+  ] = useSound("/sound/waterfallNature.mp3", {
     loop: true,
+    volume: volume.ambient / 100,
   });
-
-  const [playFireplace, { stop: stopFireplace }] = useSound(
-    "/sound/fireplace.mp3",
-    { loop: true }
-  );
-
-  const [playCoffeeShop, { stop: stopCoffeeShop }] = useSound(
-    "/sound/coffeeShop.mp3",
-    { loop: true }
-  );
-
-  const [playWaterfallNature, { stop: stopWaterfallNature }] = useSound(
-    "/sound/waterfallNature.mp3",
-    { loop: true }
-  );
 
   const musicalData: backgroundMusicDataType[] = [
     {
@@ -59,16 +78,19 @@ const MusicMixer = () => {
       label: "Calm Piano",
       play: playCalmPiano,
       stop: stopCalmPiano,
+      sound: soundCalmPiano,
     },
     {
       label: "Lofi Chillhop",
       play: playLofiChillhop,
       stop: stopLofiChillhop,
+      sound: soundLofiChillhop,
     },
     {
       label: "Jazz",
       play: playJazz,
       stop: stopJazz,
+      sound: soundJazz,
     },
   ];
 
@@ -82,21 +104,25 @@ const MusicMixer = () => {
       label: "Rain",
       play: playRain,
       stop: stopRain,
+      sound: soundRain,
     },
     {
       label: "Fireplace",
       play: playFireplace,
       stop: stopFireplace,
+      sound: soundFireplace,
     },
     {
       label: "Coffee Shop",
       play: playCoffeeShop,
       stop: stopCoffeeShop,
+      sound: soundCoffeeShop,
     },
     {
       label: "Waterfall Nature",
       play: playWaterfallNature,
       stop: stopWaterfallNature,
+      sound: soundWaterfallNature,
     },
   ];
 
@@ -109,26 +135,32 @@ const MusicMixer = () => {
 
   useEffect(() => {
     if (musical) {
+      musical.sound?.volume(volume.musical / 100);
       musical.play();
     }
-    // Clean up function - stop the current music when the component unmounts
-    return () => {
-      if (musical) {
-        musical.stop();
-      }
-    };
+
+    // If the previous musical object exists and is not the same as the current one, stop it
+    if (prevMusicalRef.current) {
+      prevMusicalRef.current.stop();
+    }
+
+    // Update the ref to the current musical object
+    prevMusicalRef.current = musical;
   }, [musical]);
 
   useEffect(() => {
+    console.log(ambient);
+
     if (ambient) {
+      ambient.sound?.volume(volume.ambient / 100);
       ambient.play();
     }
-    // Clean up function - stop the current music when the component unmounts
-    return () => {
-      if (ambient) {
-        ambient.stop();
-      }
-    };
+
+    if (prevAmbientRef.current) {
+      prevAmbientRef.current.stop();
+    }
+
+    prevAmbientRef.current = ambient;
   }, [ambient]);
 
   return (
@@ -148,40 +180,65 @@ const MusicMixer = () => {
 
       <div id="musical-styles" className="p-4">
         <p className="mb-4 text-lg font-medium capitalize">Musical Styles</p>
-        <div className="flex flex-col gap-2">
-          {musicalData.map((item, index) => (
-            <span
-              key={index}
-              className="text-white/60 cursor-pointer"
-              onClick={() => setMusical(item)}
-            >
-              {item.label}
+        <div className="flex justify-between">
+          <div className="flex flex-col gap-2">
+            {musicalData.map((item, index) => (
+              <span
+                key={index}
+                className="text-white/60 cursor-pointer"
+                onClick={() => setMusical(item)}
+              >
+                {item.label}
+              </span>
+            ))}
+          </div>
+          <div data-vaul-no-drag className="relative">
+            <Slider
+              defaultValue={[volume.musical]}
+              max={100}
+              step={1}
+              className="h-32 w-8 cursor-pointer"
+              orientation="vertical"
+              onValueChange={(value) =>
+                setVolume({ ...volume, musical: value[0] })
+              }
+            />
+            <span className="text-sm absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+              {volume.musical}
             </span>
-          ))}
-        </div>
-        <div data-vaul-no-drag>
-          <Slider
-            defaultValue={[33]}
-            max={100}
-            step={1}
-            inverted
-            className="mt-5 cursor-pointer"
-          />
+          </div>
         </div>
       </div>
 
       <div id="ambient-sounds" className="p-4">
         <p className="mb-4 text-lg font-medium capitalize">Ambient Sounds</p>
-        <div className="flex flex-col gap-2">
-          {ambientData.map((item, index) => (
-            <span
-              key={index}
-              className="text-white/60 cursor-pointer"
-              onClick={() => setAmbient(item)}
-            >
-              {item.label}
+        <div className="flex justify-between">
+          <div className="flex flex-col gap-2">
+            {ambientData.map((item, index) => (
+              <span
+                key={index}
+                className="text-white/60 cursor-pointer"
+                onClick={() => setAmbient(item)}
+              >
+                {item.label}
+              </span>
+            ))}
+          </div>
+          <div data-vaul-no-drag className="relative">
+            <Slider
+              defaultValue={[volume.ambient]}
+              max={100}
+              step={1}
+              className="h-32 w-8 cursor-pointer"
+              orientation="vertical"
+              onValueChange={(value) =>
+                setVolume({ ...volume, ambient: value[0] })
+              }
+            />
+            <span className="text-sm absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+              {volume.ambient}
             </span>
-          ))}
+          </div>
         </div>
       </div>
     </>

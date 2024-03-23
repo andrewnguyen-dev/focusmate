@@ -3,6 +3,7 @@ import { Archivo } from "next/font/google";
 import "./globals.css";
 import { TimeContextProvider } from "@/context/time-context";
 import { BackgroundContextProvider } from "@/context/background-context";
+import { VolumeContextProvider } from "@/context/volume-context";
 
 const archivo = Archivo({ subsets: ["latin"] });
 
@@ -20,7 +21,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={archivo.className}>
         <BackgroundContextProvider>
-          <TimeContextProvider>{children}</TimeContextProvider>
+          <TimeContextProvider>
+            <VolumeContextProvider>{children}</VolumeContextProvider>
+          </TimeContextProvider>
         </BackgroundContextProvider>
       </body>
     </html>
