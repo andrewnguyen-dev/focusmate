@@ -35,7 +35,7 @@ const SettingBackground = () => {
           <div
             key={index}
             className={clsx(
-              "inline-block rounded-sm overflow-hidden cursor-pointer hover:opacity-[.85]",
+              "inline-block rounded-sm overflow-hidden cursor-pointer hover:opacity-[.85] active:scale-[.97] transition-all",
               {
                 "outline outline-2 outline-cyan-400": bg.src === background.src,
               }

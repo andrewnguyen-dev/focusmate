@@ -5,6 +5,7 @@ import { useTimeContext } from "@/context/time-context";
 import { useEffect, useState } from "react";
 import ModeButton from "./mode-button";
 import useSound from "use-sound";
+import { IconMusic } from "@tabler/icons-react";
 
 const Timer = () => {
   const { pomodoroTime, shortBreakTime, longBreakTime } = useTimeContext();
@@ -83,9 +84,7 @@ const Timer = () => {
       <div className="flex gap-3">
         <ModeButton
           label="pomodoro"
-          onClick={() => {
-            startSession("pomodoro");
-          }}
+          onClick={() => startSession("pomodoro")}
           sessionType={sessionType}
         />
         <ModeButton
@@ -99,12 +98,12 @@ const Timer = () => {
           sessionType={sessionType}
         />
       </div>
+
       <span className="text-8xl text-gray-50 font-bold ">{formattedTime}</span>
-      <div className="flex gap-3">
+
+      <div className="flex gap-3 items-center">
         <button
-          onClick={() => {
-            setIsRunning(!isRunning);
-          }}
+          onClick={() => setIsRunning(!isRunning)}
           className="text-gray-50 py-2 px-5 border-2 border-gray-50 rounded-[16px] hover:bg-gray-50 hover:text-gray-800 transition-all ease-in"
         >
           {isRunning ? "pause" : "start"}

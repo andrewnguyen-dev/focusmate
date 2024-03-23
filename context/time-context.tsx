@@ -22,8 +22,6 @@ type TimeContextProviderProps = {
 
 const TimeContext = createContext<TimeContextType | null>(null);
 
-
-
 export const TimeContextProvider = ({ children }: TimeContextProviderProps) => {
   const [pomodoroTime, setPomodoroTime] = useState<number>(
     DEFAULT_POMODORO_TIME

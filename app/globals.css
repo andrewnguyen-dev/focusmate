@@ -4,17 +4,37 @@
 
 /* width */
 ::-webkit-scrollbar {
-    width: 8px;
+  width: 8px;
 }
- 
+
 /* Track */
 ::-webkit-scrollbar-track {
-    background: #1f2937;
-    border-radius: 5px;
+  background: #1f2937;
+  border-radius: 5px;
 }
- 
+
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: #374151;
-    border-radius: 5px;
+  background: #374151;
+  border-radius: 5px;
 }
+
+.cross-icon::before{
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2px; /* Cannot be replaced by Tailwind */
+  height: 32px; /* Adjust size as needed */
+  background-color: white; /* Use Tailwind's text color classes to change */
+  transition: transform 0.3s ease-in-out; /* Tailwind does not directly handle pseudo-element transitions */
+}
+
+.cross-icon::before {
+  transform: scale(0.1) translate(50%, 50%) rotate(45deg);
+}
+
+.music-toggle.active .cross-icon::before{
+  transform: scale(1) translate(-50%, -50%) rotate(45deg);
+}
+
