@@ -1,6 +1,7 @@
 "use client";
 
-import React, { createContext, useState } from "react";
+import { backgroundMusicDataType } from "@/lib/types";
+import React, { createContext, useRef, useState } from "react";
 
 type VolumeContextProvider = {
   children: React.ReactNode;
@@ -14,6 +15,8 @@ type VolumeType = {
 type VolumeContextType = {
   volume: VolumeType;
   setVolume: React.Dispatch<React.SetStateAction<VolumeType>>;
+  prevMusicalRef: React.MutableRefObject<backgroundMusicDataType | undefined>;
+  prevAmbientRef: React.MutableRefObject<backgroundMusicDataType | undefined>;
 };
 
 const VolumeContext = createContext<VolumeContextType | null>(null);
@@ -23,9 +26,11 @@ export const VolumeContextProvider = ({ children }: VolumeContextProvider) => {
     musical: 60,
     ambient: 60,
   });
+  const prevMusicalRef = useRef<backgroundMusicDataType>();
+  const prevAmbientRef = useRef<backgroundMusicDataType>();
 
   return (
-    <VolumeContext.Provider value={{ volume, setVolume }}>
+    <VolumeContext.Provider value={{ volume, setVolume, prevMusicalRef, prevAmbientRef }}>
       {children}
     </VolumeContext.Provider>
   );

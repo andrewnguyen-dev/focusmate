@@ -12,18 +12,11 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { Slider } from "./ui/slider";
 import { useVolumeContext } from "@/context/volume-context";
-
-type backgroundMusicDataType = {
-  label: string;
-  play: () => void;
-  stop: () => void;
-  sound?: Howl | null;
-};
+import { backgroundMusicDataType } from "@/lib/types";
 
 const MusicMixer = () => {
-  const { volume, setVolume } = useVolumeContext();
-  const prevMusicalRef = useRef<backgroundMusicDataType>();
-  const prevAmbientRef = useRef<backgroundMusicDataType>();
+  const { volume, setVolume, prevMusicalRef, prevAmbientRef } =
+    useVolumeContext();
 
   const [playCalmPiano, { stop: stopCalmPiano, sound: soundCalmPiano }] =
     useSound("/sound/calmPiano.mp3", {
@@ -127,40 +120,36 @@ const MusicMixer = () => {
   ];
 
   const [musical, setMusical] = useState<backgroundMusicDataType>(
-    musicalData[0]
+    prevMusicalRef.current || musicalData[0]
   );
   const [ambient, setAmbient] = useState<backgroundMusicDataType>(
-    ambientData[0]
+    prevAmbientRef.current || ambientData[0]
   );
 
   useEffect(() => {
-    if (musical) {
-      musical.sound?.volume(volume.musical / 100);
-      musical.play();
+    if (prevMusicalRef.current !== musical) {
+      if (musical) {
+        musical.sound?.volume(volume.musical / 100);
+        musical.play();
+      }
+      if (prevMusicalRef.current) {
+        prevMusicalRef.current.stop();
+      }
+      prevMusicalRef.current = musical;
     }
-
-    // If the previous musical object exists and is not the same as the current one, stop it
-    if (prevMusicalRef.current) {
-      prevMusicalRef.current.stop();
-    }
-
-    // Update the ref to the current musical object
-    prevMusicalRef.current = musical;
   }, [musical]);
 
   useEffect(() => {
-    console.log(ambient);
-
-    if (ambient) {
-      ambient.sound?.volume(volume.ambient / 100);
-      ambient.play();
+    if (prevAmbientRef.current !== ambient) {
+      if (ambient) {
+        ambient.sound?.volume(volume.ambient / 100);
+        ambient.play();
+      }
+      if (prevAmbientRef.current) {
+        prevAmbientRef.current.stop();
+      }
+      prevAmbientRef.current = ambient;
     }
-
-    if (prevAmbientRef.current) {
-      prevAmbientRef.current.stop();
-    }
-
-    prevAmbientRef.current = ambient;
   }, [ambient]);
 
   return (
