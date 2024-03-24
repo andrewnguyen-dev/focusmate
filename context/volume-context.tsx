@@ -23,8 +23,8 @@ const VolumeContext = createContext<VolumeContextType | null>(null);
 
 export const VolumeContextProvider = ({ children }: VolumeContextProvider) => {
   const [volume, setVolume] = useState<VolumeType>({
-    musical: 60,
-    ambient: 60,
+    musical: 80,
+    ambient: 80,
   });
   const prevMusicalRef = useRef<backgroundMusicDataType>();
   const prevAmbientRef = useRef<backgroundMusicDataType>();

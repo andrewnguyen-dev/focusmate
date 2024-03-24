@@ -104,7 +104,7 @@ const Timer = () => {
       <div className="flex gap-3 items-center">
         <button
           onClick={() => setIsRunning(!isRunning)}
-          className="text-gray-50 py-2 px-5 border-2 border-gray-50 rounded-[16px] hover:bg-gray-50 hover:text-gray-800 transition-all ease-in"
+          className="text-lg py-2 px-6 border-2 border-gray-50 rounded-[16px] font-medium bg-gray-50 text-gray-800 hover:border-gray-700 transition-all ease-in"
         >
           {isRunning ? "pause" : "start"}
         </button>
@@ -119,7 +119,7 @@ const Timer = () => {
             );
             setIsRunning(false);
           }}
-          className="text-gray-50 py-2 px-5 border-2 border-gray-50 rounded-[16px] hover:bg-gray-50 hover:text-gray-800 transition-all ease-in"
+          className="text-lg text-gray-50 py-2 px-6 border-2 border-gray-50 rounded-[16px] hover:bg-gray-50 hover:text-gray-800 transition-all ease-in"
         >
           reset
         </button>

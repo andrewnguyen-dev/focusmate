@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import useSound from "use-sound";
@@ -13,111 +12,15 @@ import { useEffect, useRef, useState } from "react";
 import { Slider } from "./ui/slider";
 import { useVolumeContext } from "@/context/volume-context";
 import { backgroundMusicDataType } from "@/lib/types";
+import { useAmbientSounds, useMusicalSounds } from "@/lib/hooks";
+import { IconX } from "@tabler/icons-react";
 
 const MusicMixer = () => {
   const { volume, setVolume, prevMusicalRef, prevAmbientRef } =
     useVolumeContext();
 
-  const [playCalmPiano, { stop: stopCalmPiano, sound: soundCalmPiano }] =
-    useSound("/sound/calmPiano.mp3", {
-      loop: true,
-      volume: volume.musical / 100,
-    });
-
-  const [
-    playLofiChillhop,
-    { stop: stopLofiChillhop, sound: soundLofiChillhop },
-  ] = useSound("/sound/lofiChillhop.mp3", {
-    loop: true,
-    volume: volume.musical / 100,
-  });
-
-  const [playJazz, { stop: stopJazz, sound: soundJazz }] = useSound(
-    "/sound/jazz.mp3",
-    { loop: true, volume: volume.musical / 100 }
-  );
-
-  const [playRain, { stop: stopRain, sound: soundRain }] = useSound(
-    "/sound/rain.mp3",
-    { loop: true, volume: volume.ambient / 100 }
-  );
-
-  const [playFireplace, { stop: stopFireplace, sound: soundFireplace }] =
-    useSound("/sound/fireplace.mp3", {
-      loop: true,
-      volume: volume.ambient / 100,
-    });
-
-  const [playCoffeeShop, { stop: stopCoffeeShop, sound: soundCoffeeShop }] =
-    useSound("/sound/coffeeShop.mp3", {
-      loop: true,
-      volume: volume.ambient / 100,
-    });
-  const [
-    playWaterfallNature,
-    { stop: stopWaterfallNature, sound: soundWaterfallNature },
-  ] = useSound("/sound/waterfallNature.mp3", {
-    loop: true,
-    volume: volume.ambient / 100,
-  });
-
-  const musicalData: backgroundMusicDataType[] = [
-    {
-      label: "None",
-      play: () => {},
-      stop: () => {},
-    },
-    {
-      label: "Calm Piano",
-      play: playCalmPiano,
-      stop: stopCalmPiano,
-      sound: soundCalmPiano,
-    },
-    {
-      label: "Lofi Chillhop",
-      play: playLofiChillhop,
-      stop: stopLofiChillhop,
-      sound: soundLofiChillhop,
-    },
-    {
-      label: "Jazz",
-      play: playJazz,
-      stop: stopJazz,
-      sound: soundJazz,
-    },
-  ];
-
-  const ambientData: backgroundMusicDataType[] = [
-    {
-      label: "None",
-      play: () => {},
-      stop: () => {},
-    },
-    {
-      label: "Rain",
-      play: playRain,
-      stop: stopRain,
-      sound: soundRain,
-    },
-    {
-      label: "Fireplace",
-      play: playFireplace,
-      stop: stopFireplace,
-      sound: soundFireplace,
-    },
-    {
-      label: "Coffee Shop",
-      play: playCoffeeShop,
-      stop: stopCoffeeShop,
-      sound: soundCoffeeShop,
-    },
-    {
-      label: "Waterfall Nature",
-      play: playWaterfallNature,
-      stop: stopWaterfallNature,
-      sound: soundWaterfallNature,
-    },
-  ];
+  const musicalData: backgroundMusicDataType[] = useMusicalSounds(volume);
+  const ambientData: backgroundMusicDataType[] = useAmbientSounds(volume);
 
   const [musical, setMusical] = useState<backgroundMusicDataType>(
     prevMusicalRef.current || musicalData[0]
@@ -126,36 +29,36 @@ const MusicMixer = () => {
     prevAmbientRef.current || ambientData[0]
   );
 
-  useEffect(() => {
-    if (prevMusicalRef.current !== musical) {
-      if (musical) {
-        musical.sound?.volume(volume.musical / 100);
-        musical.play();
-      }
-      if (prevMusicalRef.current) {
-        prevMusicalRef.current.stop();
-      }
-      prevMusicalRef.current = musical;
+  // Utility function to manage changing tracks and volume updates
+  const manageTrack = (
+    track: backgroundMusicDataType,
+    prevTrackRef: React.MutableRefObject<backgroundMusicDataType | undefined>,
+    volume: number
+  ) => {
+    // Set volume if the track exists
+    track.sound?.volume(volume / 100);
+
+    // Play new track and stop the previous one if it's different
+    if (prevTrackRef.current !== track) {
+      track.play?.();
+      prevTrackRef.current?.stop?.();
+      prevTrackRef.current = track; // Update the ref to current track
     }
-  }, [musical]);
+  };
+
+  // Use the function in useEffect hooks
+  useEffect(() => {
+    manageTrack(musical, prevMusicalRef, volume.musical);
+  }, [musical, volume.musical, prevMusicalRef]);
 
   useEffect(() => {
-    if (prevAmbientRef.current !== ambient) {
-      if (ambient) {
-        ambient.sound?.volume(volume.ambient / 100);
-        ambient.play();
-      }
-      if (prevAmbientRef.current) {
-        prevAmbientRef.current.stop();
-      }
-      prevAmbientRef.current = ambient;
-    }
-  }, [ambient]);
+    manageTrack(ambient, prevAmbientRef, volume.ambient);
+  }, [ambient, volume.ambient, prevAmbientRef]);
 
   return (
     <>
+        <DrawerClose className="flex justify-end"><IconX size={20} stroke={2} className="opacity-60"/></DrawerClose>
       <DrawerHeader>
-        <DrawerClose>Close</DrawerClose>
         <div className="flex flex-col">
           <DrawerTitle className="text-xl">
             Customize Your Sound Experience
@@ -170,12 +73,13 @@ const MusicMixer = () => {
       <div id="musical-styles" className="p-4">
         <p className="mb-4 text-lg font-medium capitalize">Musical Styles</p>
         <div className="flex justify-between">
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-wrap gap-3 w-full">
             {musicalData.map((item, index) => (
               <span
                 key={index}
-                className="text-white/60 cursor-pointer"
+                className="flex items-center justify-center text-gray-200 cursor-pointer w-[140px] h-[40px] rounded-lg"
                 onClick={() => setMusical(item)}
+                style={{ backgroundImage: `url(${item.bgUrl})`, backgroundSize: 'cover' }}
               >
                 {item.label}
               </span>
@@ -188,9 +92,10 @@ const MusicMixer = () => {
               step={1}
               className="h-32 w-8 cursor-pointer"
               orientation="vertical"
-              onValueChange={(value) =>
-                setVolume({ ...volume, musical: value[0] })
-              }
+              onValueChange={(value) => {
+                setVolume({ ...volume, musical: value[0] });
+                console.log({ ...volume, musical: value[0] });
+              }}
             />
             <span className="text-sm absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
               {volume.musical}
