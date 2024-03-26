@@ -1,6 +1,7 @@
 # 🍅 Focusmate
 
 Focusmate is a web application designed to enhance your focus, relaxation, and productivity through customizable Pomodoro timers, dynamic backgrounds, and a personalized mix of music and ambient sounds. Perfect for work, study, or any task requiring concentration.
+Visit website [here](https://focusmate.vercel.app/).
 
 ## Features
 
