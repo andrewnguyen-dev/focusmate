@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🍅 Focusmate
+
+Focusmate is a web application designed to enhance your focus, relaxation, and productivity through customizable Pomodoro timers, dynamic backgrounds, and a personalized mix of music and ambient sounds. Perfect for work, study, or any task requiring concentration.
+
+## Features
+
+### ⏲ Pomodoro Timer
+- Utilize the Pomodoro technique to boost productivity with customizable timers.
+- Easily set durations for Pomodoro sessions, short breaks, and long breaks according to your preference.
+
+### 🎨 Customizable Backgrounds
+- Change the background to suit your mood or task. Choose from a variety of high-quality images to create the perfect workspace ambiance.
+
+### 🎵 Music Mixer
+- Craft your unique sound environment with our music mixer.
+- Mix and match different musical styles and ambient sounds to create your ideal background atmosphere. Whether you need calm piano tunes, the sound of rain, or a bustling coffee shop vibe, Pomodoro Harmony has you covered.
 
 ## Getting Started
 
-First, run the development server:
+To get a local copy up and running, follow these simple steps:
 
+1. Clone the repo
+```bash
+git clone https://github.com/andrewnguyen-nsw/focusmate
+````
+2. Install NPM packages
+```bash
+npm install
+```
+3. Start the development server
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Usage
+- Start a Pomodoro session to focus on your tasks.
+- Customize the timer settings to match your work rhythm.
+- Select a background and create a sound mix to enhance your concentration or relaxation.
+- Save your preferences for quick setup in future sessions.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Contributing
+Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+1. Fork the Project
+2. Create your Feature Branch (git checkout -b feature/AmazingFeature)
+3. Commit your Changes (git commit -m 'Add some AmazingFeature')
+4. Push to the Branch (git push origin feature/AmazingFeature)
+5. Open a Pull Request
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Contact
+[Andrew Nguyen](https://andrewnguyen-dev.vercel.app/) - andrewnguyen.nsw@gmail.com
