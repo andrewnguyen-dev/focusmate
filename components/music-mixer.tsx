@@ -69,6 +69,7 @@ const MusicMixer = () => {
           </DrawerDescription>
         </div>
       </DrawerHeader>
+      <p className="mx-4 italic">(Still in developement)</p>
 
       <div id="musical-styles" className="p-4">
         <p className="mb-4 text-lg font-medium capitalize">Musical Styles</p>

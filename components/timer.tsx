@@ -5,7 +5,6 @@ import { useTimeContext } from "@/context/time-context";
 import { useEffect, useState } from "react";
 import ModeButton from "./mode-button";
 import useSound from "use-sound";
-import { IconMusic } from "@tabler/icons-react";
 
 const Timer = () => {
   const { pomodoroTime, shortBreakTime, longBreakTime } = useTimeContext();
@@ -17,7 +16,8 @@ const Timer = () => {
   const formattedTime = new Date(timeLeft * 1000).toISOString().slice(14, 19); // Convert to ISO string and extract the MM:SS part
 
   const [playCountdownSound] = useSound("/sound/countdown.mp3");
-  const [playEndSound, {stop, sound}] = useSound("/sound/end.mp3");
+  const [playEndSound] = useSound("/sound/end.mp3");
+  const [playMouseClick] = useSound("/sound/mouseClick.mp3");
 
   // Manages the countdown of the timer, pausing when reaching 0 and handling session transitions.
   useEffect(() => {
@@ -41,17 +41,16 @@ const Timer = () => {
 
   // Updates the timeLeft whenever the sessionType changes or the duration for the current session type is updated.
   useEffect(() => {
-    setTimeLeft(
-      sessionType === "pomodoro"
-        ? pomodoroTime
-        : sessionType === "short break"
-        ? shortBreakTime
-        : longBreakTime
-    );
-  }, [sessionType, pomodoroTime, shortBreakTime, longBreakTime]);
+    setTimeForNewSession(sessionType)
+  }, [sessionType]);
 
   // Starts a new timer session with the given type and updates the session type and time left accordingly.
   const startSession = (type: string) => {
+    setTimeForNewSession(type);
+    setSessionType(type);
+  };
+
+  const setTimeForNewSession = (type: string) => {
     const time =
       type === "pomodoro"
         ? pomodoroTime
@@ -59,8 +58,7 @@ const Timer = () => {
         ? shortBreakTime
         : longBreakTime;
     setTimeLeft(time);
-    setSessionType(type);
-  };
+  }
 
   // Handles transitioning to the next session when the current session ends.
   const handleSessionTransition = () => {
@@ -77,6 +75,16 @@ const Timer = () => {
       startSession("pomodoro");
     }
   };
+
+  const handleResetClick = () => {
+    setTimeForNewSession(sessionType)
+    setIsRunning(false);
+  }
+
+  const handleStartPauseClick = () => {
+    setIsRunning(!isRunning);
+    playMouseClick();
+  }
 
   // Renders the timer UI with mode buttons for starting different sessions and controls for starting/pausing and resetting the timer.
   return (
@@ -103,22 +111,13 @@ const Timer = () => {
 
       <div className="flex gap-3 items-center">
         <button
-          onClick={() => setIsRunning(!isRunning)}
+          onClick={() => handleStartPauseClick()}
           className="text-lg py-2 px-6 border-2 border-gray-50 rounded-[16px] font-medium bg-gray-50 text-gray-800 hover:border-gray-700 transition-all ease-in"
         >
           {isRunning ? "pause" : "start"}
         </button>
         <button
-          onClick={() => {
-            setTimeLeft(
-              sessionType === "pomodoro"
-                ? pomodoroTime
-                : sessionType === "short break"
-                ? shortBreakTime
-                : longBreakTime
-            );
-            setIsRunning(false);
-          }}
+          onClick={() => handleResetClick()}
           className="text-lg text-gray-50 py-2 px-6 border-2 border-gray-50 rounded-[16px] hover:bg-gray-50 hover:text-gray-800 transition-all ease-in"
         >
           reset
