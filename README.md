@@ -13,7 +13,7 @@ Focusmate is a web application designed to enhance your focus, relaxation, and p
 
 ### 🎵 Music Mixer
 - Craft your unique sound environment with our music mixer.
-- Mix and match different musical styles and ambient sounds to create your ideal background atmosphere. Whether you need calm piano tunes, the sound of rain, or a bustling coffee shop vibe, Pomodoro Harmony has you covered.
+- Mix and match different musical styles and ambient sounds to create your ideal background atmosphere. Whether you need calm piano tunes, the sound of rain, or a bustling coffee shop vibe, Focusmate has you covered.
 
 ## Getting Started
 
